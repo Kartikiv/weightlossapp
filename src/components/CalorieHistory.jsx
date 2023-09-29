@@ -4,8 +4,14 @@ import axios from "axios";
 class CalorieHistory extends Component {
 	state = { calorieData: [] };
 	async componentDidMount() {
+		const headers = {
+			"ngrok-skip-browser-warning": 1,
+		};
 		const response = await axios.get(
-			"http://192.168.0.214:8080/getcaloriedata?userid=52",
+			"https://6358-115-97-186-99.ngrok-free.app/getcaloriedata?userid=52",
+			{
+				headers: headers,
+			},
 			{ crossDomain: true }
 		);
 		const propsv = response.data;

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
+
 class WeigthUpdate extends Component {
 	state = {
 		formData: {
@@ -27,20 +27,24 @@ class WeigthUpdate extends Component {
 			console.log("zero");
 			return;
 		}
-
+		const headers = {
+			"ngrok-skip-browser-warning": 1,
+		};
 		// Make an Axios POST request to submit the form data
 		const response = axios.post(
-			"http://192.168.0.214:8080/addweightdata",
+			"https://6358-115-97-186-99.ngrok-free.app/addweightdata",
 			formData,
 			{
 				crossDomain: true,
+			},
+			{
+				headers: headers,
 			}
 		);
 		console.log(response.data);
 		window.location.reload();
 	};
 	render() {
-		const { formData } = this.state;
 		return (
 			<React.Fragment>
 				<div className="WeigthUpdate">
