@@ -8,6 +8,8 @@ import CalorieHistory from "./CalorieHistory";
 import HomePage from "./homePage";
 import WeigthUpdate from "./WeigthUpdate";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import FoodHistory from "./FoodHistory";
+import Login from "./login";
 
 class NavBarComponent extends Component {
 	state = {};
@@ -51,6 +53,8 @@ class NavBarComponent extends Component {
 										<Nav.Link href="update">
 											Update
 										</Nav.Link>
+										<Nav.Link href="food">food</Nav.Link>
+										<Nav.Link href="login">login</Nav.Link>
 									</Nav>
 								</Offcanvas.Body>
 							</Navbar.Offcanvas>
@@ -61,6 +65,8 @@ class NavBarComponent extends Component {
 						<Route path="/calorie" element={<CalorieHistory />} />
 						<Route path="/home" element={<HomePage />} />
 						<Route path="/update" element={<WeigthUpdate />} />
+						<Route path="/food" element={<FoodHistory />} />
+						<Route path="/login" element={<Login />} />
 					</Routes>
 				</Router>
 			</React.Fragment>
