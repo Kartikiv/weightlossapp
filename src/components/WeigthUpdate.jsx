@@ -32,7 +32,7 @@ class WeigthUpdate extends Component {
 		};
 		// Make an Axios POST request to submit the form data
 		const response = axios.post(
-			"https://6358-115-97-186-99.ngrok-free.app/addweightdata",
+			"http://192.168.0.214:8080/addweightdata",
 			formData,
 			{
 				crossDomain: true,

@@ -34,7 +34,7 @@ class WeigthHistory extends Component {
 			"ngrok-skip-browser-warning": 1,
 		};
 		const response = await axios.get(
-			"https://6358-115-97-186-99.ngrok-free.app/getuserweightdata?userid=52",
+			"http://192.168.0.214:8080/getuserweightdata?userid=52",
 			{
 				headers: headers,
 			},
