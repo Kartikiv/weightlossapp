@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import WeigthHistory from "./WeigthHistory";
 import CalorieHistory from "./CalorieHistory";
 import HomePage from "./homePage";

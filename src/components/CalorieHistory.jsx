@@ -3,10 +3,17 @@ import axios from "axios";
 
 class CalorieHistory extends Component {
 	state = { calorieData: [] };
+
 	async componentDidMount() {
+		const token = process.env.REACT_APP_TOKEN_API;
+
+		const header = {
+			Authorization: `Bearer ${token}`,
+		};
 		const response = await axios.get(
 			"http://192.168.0.214:8080/getcaloriedata?userid=52",
-			{ crossDomain: true }
+			{ headers: header },
+			{ crossDomain: true, withCredentials: true }
 		);
 		const propsv = response.data;
 		console.log(response.data);
@@ -28,7 +35,7 @@ class CalorieHistory extends Component {
 					</thead>
 					<tbody>
 						{calorieData.map((info) => (
-							<tr scope="row" key={info.calorieId}>
+							<tr key={info.calorieId}>
 								<td>{info.calories}</td>
 								<td>
 									{new Date(

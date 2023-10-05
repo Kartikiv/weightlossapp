@@ -66,14 +66,14 @@ class WeigthHistory extends Component {
 			<div className="tableprop weigth">
 				<table className="table table-sm table-dark">
 					<thead>
-						<tr scope="col">
+						<tr>
 							<th>Weigth</th>
 							<th>Date</th>
 						</tr>
 					</thead>
 					<tbody>
 						{weightData.map((info) => (
-							<tr scope="row" key={info.weightId}>
+							<tr key={info.weightId}>
 								<td>{info.weight}</td>
 								<td>
 									{info.createdDate === null
