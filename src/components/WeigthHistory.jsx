@@ -30,9 +30,16 @@ class WeigthHistory extends Component {
 	};
 
 	async componentDidMount() {
+		const token = process.env.REACT_APP_TOKEN_API;
+
+		const header = {
+			Authorization: `Bearer ${token}`,
+		};
+
 		const response = await axios.get(
 			"http://192.168.0.214:8080/getuserweightdata?userid=52",
-			{ crossDomain: true }
+			{ headers: header },
+			{ crossDomain: true, withCredentials: true }
 		);
 		const weightData = response.data;
 
@@ -79,25 +86,30 @@ class WeigthHistory extends Component {
 						))}
 					</tbody>
 				</table>
-				<Line
-					data={{
-						labels: this.state.labels, // Pass the labels
-						datasets: this.state.datasets, // Pass the datasets
-					}}
-					options={{
-						title: {
-							display: true,
-							text: "Weight Graph",
-							fontSize: 20,
-						},
-						legend: {
-							display: true,
-							position: "right",
-						},
-						responsive: true, // Make the chart responsive
-						maintainAspectRatio: true,
-					}}
-				/>
+				<div className="chartjs">
+					<div class="chartAreaWrapper">
+						<canvas id="myChart" height="300" width="1200"></canvas>
+					</div>
+					<Line
+						data={{
+							labels: this.state.labels, // Pass the labels
+							datasets: this.state.datasets, // Pass the datasets
+						}}
+						options={{
+							title: {
+								display: true,
+								text: "Weight Graph",
+								fontSize: 20,
+							},
+							legend: {
+								display: true,
+								position: "right",
+							},
+							responsive: true, // Make the chart responsive
+							maintainAspectRatio: true,
+						}}
+					/>
+				</div>
 			</div>
 		);
 	}

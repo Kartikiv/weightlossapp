@@ -27,14 +27,18 @@ class WeigthUpdate extends Component {
 			console.log("zero");
 			return;
 		}
+		const token = process.env.REACT_APP_TOKEN_API;
+
+		const header = {
+			Authorization: `Bearer ${token}`,
+		};
 
 		// Make an Axios POST request to submit the form data
 		const response = axios.post(
 			"http://192.168.0.214:8080/addweightdata",
 			formData,
-			{
-				crossDomain: true,
-			}
+			{ headers: header },
+			{ crossDomain: true, withCredentials: true }
 		);
 		console.log(response.data);
 		window.location.reload();

@@ -43,6 +43,14 @@
   color: #61dafb;
 }
 
+.chartjs{
+  display: block;
+    width: calc(100%-10px);
+      overflow-x: scroll;
+      overflow-y: scroll;
+      justify-content: space-between;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

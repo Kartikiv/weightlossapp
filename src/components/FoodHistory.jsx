@@ -4,11 +4,12 @@ class FoodHistory extends Component {
 	state = { foodData: [] };
 
 	async componentDidMount() {
-		const token =
-			"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdmF0dXJpIiwiaWF0IjoxNjk2MTE1OTA1LCJleHAiOjE2OTYxMTczNDV9.Dez3ss49-yNvj2Ab_fqEtEgtGJ4V4mWdw7HHGhbpyQg";
+		const token = process.env.REACT_APP_TOKEN_API;
+
 		const header = {
 			Authorization: `Bearer ${token}`,
 		};
+
 		const response = await axios.get(
 			"http://192.168.0.214:8080/foodeatenbyuser?userId=52",
 			{ headers: header },
