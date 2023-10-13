@@ -16,21 +16,22 @@ class NavBarComponent extends Component {
 	render() {
 		return (
 		
-				<Router>
+			<div>
+				
 					<Navbar
 						key="false"
 						expand="sm"
 						bg="dark"
 						data-bs-theme="dark"
 						className="bg-body-tertiary mb-3"
-					>
+						>
 						<Container fluid>
 							<Navbar.Brand href="home">
 								WeigthLossHelper
 							</Navbar.Brand>
 							<Navbar.Toggle
 								aria-controls={`offcanvasNavbar-expand-sm`}
-							/>
+								/>
 							<Navbar.Offcanvas
 								id={`offcanvasNavbar-expand-false`}
 								aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
@@ -40,7 +41,7 @@ class NavBarComponent extends Component {
 								<Offcanvas.Header closeButton>
 									<Offcanvas.Title
 										id={`offcanvasNavbarLabel-expand-sm`}
-									></Offcanvas.Title>
+										></Offcanvas.Title>
 								</Offcanvas.Header>
 								<Offcanvas.Body>
 									<Nav className="justify-content-end flex-grow-1 pe-3">
@@ -63,7 +64,7 @@ class NavBarComponent extends Component {
 									</Nav.Link>	
 										<Nav.Link>
 
-										<Link to="food">food</Link>
+										<Link to="/food">food</Link>
 										</Nav.Link>
 										<Nav.Link>
 										<Link to="login">login</Link>
@@ -73,16 +74,10 @@ class NavBarComponent extends Component {
 							</Navbar.Offcanvas>
 						</Container>
 					</Navbar>
-					<Routes>
-						<Route path="/weigth" element={<WeigthHistory />} />
-						<Route path="/calorie" element={<CalorieHistory />} />
-						<Route path="/home" element={<HomePage />} />
-						<Route path="/update" element={<WeigthUpdate />} />
-						<Route path="/food" element={<FoodHistory />} />
-						<Route path="/login" element={<Login />} />
-					</Routes>
-				</Router>
+					
+			
 		
+										</div>
 		);
 	}
 }

@@ -2,6 +2,7 @@
 import React, { useState, useContext } from "react";
 import axios from "../axios";
 import useAuth from "../hooks/useAuth";
+import { Link, useNavigate, useLocation} from "react-router-dom";
 
 function Login() {
 	const { auth,setAuth } = useAuth();
@@ -9,6 +10,10 @@ function Login() {
 	const [password, setPassword] = useState("");
 	const [errMsg, setErrMsg] = useState("");
 	const [success, setSuccess] = useState(false);
+	const location =useLocation();
+	const navigate= useNavigate();
+	const from =location.state?.pathname || "/home"
+
 	const LOGIN_URL = "/authenticate";
 
 	const handleSubmit = async (e) => {
@@ -28,6 +33,7 @@ function Login() {
 			setAuth(response.data);
 			console.log(auth)
 			setSuccess(true);
+			navigate (from ,{replace :true});
 		} catch (err) {
 			if (err.response?.status === 403) {
 			}
@@ -37,11 +43,7 @@ function Login() {
 
 	return (
 		<>
-			{success ? (
-				<p style={{ backgroundColor: "green", color: "red" }}>
-					Login Sucess {JSON.stringify(auth)}
-				</p>
-			) : (
+			 (
 				<header className="loginPage">
 					<p style={{ backgroundColor: "red" }}>
 						{errMsg ? errMsg : errMsg}
@@ -80,7 +82,7 @@ function Login() {
 						</div>
 					</form>
 				</header>
-			)}
+			)
 		</>
 	);
 }
