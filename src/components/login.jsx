@@ -1,62 +1,86 @@
 // LoginForm.js
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import axios from "../axios";
+import useAuth from "../hooks/useAuth";
 
 function Login() {
-	const [formData, setFormData] = useState({
-		username: "",
-		password: "",
-	});
+	const { setAuth } = useAuth();
+	const [userName, setUserName] = useState("");
+	const [password, setPassword] = useState("");
+	const [errMsg, setErrMsg] = useState("");
+	const [success, setSuccess] = useState(false);
+	const LOGIN_URL = "/authenticate";
 
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setFormData({
-			...formData,
-			[name]: value,
-		});
-	};
-
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// You can add your authentication logic here using the formData
-		console.log("Form submitted with data:", formData);
+
+		try {
+			console.log(JSON.stringify({ userName, password }));
+			const response = await axios.post(
+				LOGIN_URL,
+				{
+					userName,
+					password,
+				},
+				{ withCredentials: true, crossDomain: true }
+			);
+			console.log(response.data);
+			setAuth(response.data);
+			setSuccess(true);
+		} catch (err) {
+			if (err.response?.status === 403) {
+			}
+			setErrMsg("Auth Failed");
+		}
 	};
 
 	return (
-		<header className="loginPage">
-			<h2 style={{ color: "white" }}>Login</h2>
-			<form onSubmit={handleSubmit}>
-				<div style={{ color: "white" }}>
-					<label htmlFor="username">Username:</label>
-					<input
-						type="text"
-						id="username"
-						name="username"
-						value={formData.username}
-						onChange={handleInputChange}
-						required
-					/>
-				</div>
-				<div style={{ color: "white" }}>
-					<label htmlFor="password">Password:</label>
-					<input
-						type="password"
-						id="password"
-						name="password"
-						value={formData.password}
-						onChange={handleInputChange}
-						required
-					/>
-				</div>
-				<div>
-					<button
-						type="submit"
-						style={{ display: "block", marginLeft: "23%" }}
-					>
-						Login
-					</button>
-				</div>
-			</form>
-		</header>
+		<>
+			{success ? (
+				<p style={{ backgroundColor: "green", color: "red" }}>
+					Login Sucess
+				</p>
+			) : (
+				<header className="loginPage">
+					<p style={{ backgroundColor: "red" }}>
+						{errMsg ? errMsg : errMsg}
+					</p>
+					<h2 style={{ color: "white" }}>Login</h2>
+					<form onSubmit={handleSubmit}>
+						<div style={{ color: "white" }}>
+							<label htmlFor="username">Username:</label>
+							<input
+								type="text"
+								id="username"
+								name="username"
+								value={userName}
+								onChange={(e) => setUserName(e.target.value)}
+								required
+							/>
+						</div>
+						<div style={{ color: "white" }}>
+							<label htmlFor="password">Password:</label>
+							<input
+								type="password"
+								id="password"
+								name="password"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+								required
+							/>
+						</div>
+						<div>
+							<button
+								type="submit"
+								style={{ display: "block", marginLeft: "23%" }}
+							>
+								Login
+							</button>
+						</div>
+					</form>
+				</header>
+			)}
+		</>
 	);
 }
 
