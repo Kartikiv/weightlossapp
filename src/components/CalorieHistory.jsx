@@ -1,54 +1,54 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
 
-class CalorieHistory extends Component {
-	state = { calorieData: [] };
+function CalorieHistory() {
+  const [calorieData, setCalorieData] = useState([]);
+  const { auth } = useAuth();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        const header = {
+          Authorization: `Bearer ${auth?.token}`,
+        };
 
-	async componentDidMount() {
-		const token = process.env.REACT_APP_TOKEN_API;
+        const response = await axios.get(
+          `http://192.168.0.214:8080/getcaloriedata?userid=${auth?.userInformation.userId}`,
+          { headers: header },
+		  { crossDomain: true, withCredentials: true }
+        );
 
-		const header = {
-			Authorization: `Bearer ${token}`,
-		};
-		const response = await axios.get(
-			"http://192.168.0.214:8080/getcaloriedata?userid=52",
-			{ headers: header },
-			{ crossDomain: true, withCredentials: true }
-		);
-		const propsv = response.data;
-		console.log(response.data);
-		console.log(propsv);
+        const propsv = response.data;
+        setCalorieData(propsv);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-		this.setState({ calorieData: propsv });
-	}
-	render() {
-		const { calorieData } = this.state;
-		console.log(calorieData);
-		return (
-			<div className="tableprop calorie">
-				<table className="table table-sm table-dark">
-					<thead>
-						<tr>
-							<th scope="col">calories</th>
-							<th scope="col">Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						{calorieData.map((info) => (
-							<tr key={info.calorieId}>
-								<td>{info.calories}</td>
-								<td>
-									{new Date(
-										info.consumptionDate
-									).toLocaleDateString()}
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
-		);
-	}
+    fetchData();
+  }, [auth]);
+
+  return (
+    <div className="tableprop calorie">
+      <table className="table table-sm table-dark">
+        <thead>
+          <tr>
+            <th scope="col">calories</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {calorieData.map((info) => (
+            <tr key={info.calorieId}>
+              <td>{info.calories}</td>
+              <td>{new Date(info.consumptionDate).toLocaleDateString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default CalorieHistory;

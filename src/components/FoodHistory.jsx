@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
 // FoodHistory a functional component to use the hooks useState, useEffect
 //
 function FoodHistory() {
 	const [foodData, setFoodData] = useState([]);
+	const { auth } = useAuth();
 	useEffect(() => {
 		const fetchData = async () => {
 			const token = process.env.REACT_APP_TOKEN_API;
 
 			const header = {
-				Authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${auth?.token}`,
 			};
 
 			const response = await axios.get(
-				"http://192.168.0.214:8080/foodeatenbyuser?userId=52",
+				`http://192.168.0.214:8080/foodeatenbyuser?userId=${auth?.userInformation.userId}`,
 				{ headers: header },
 				{ crossDomain: true, withCredentials: true }
 			);

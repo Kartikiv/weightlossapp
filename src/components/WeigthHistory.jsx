@@ -1,118 +1,126 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import useAuth from "../hooks/useAuth";
 
 Chart.register(...registerables);
-class WeigthHistory extends Component {
-	state = {
-		weightData: [],
-		labels: [],
-		datasets: [
-			{
-				label: "Weight Graph",
-				backgroundColor: [
-					"Indigo",
-					"Purple",
-					"Yellow",
-					"Teal",
-					"Red",
-					"Navy",
-					"Brown",
-				],
-				fill: false,
-				lineTension: 0.5,
-				borderColor: "rgba(0,0,0,1)",
-				borderWidth: 2,
-				data: [250, 24],
-			},
-		],
-	};
 
-	async componentDidMount() {
-		const token = process.env.REACT_APP_TOKEN_API;
+function WeightHistory() {
+  const [weightState, setWeightState] = useState({
+    weightData: [],
+    labels: [],
+    datasets: [
+      {
+        label: "Weight Graph",
+        backgroundColor: "Indigo",
+        borderColor: "Indigo",
+        fill: false,
+        lineTension: 0.5,
+        borderWidth: 2,
+        data: [],
+      },
+    ],
+  });
 
-		const header = {
-			Authorization: `Bearer ${token}`,
-		};
+  const { auth } = useAuth();
 
-		const response = await axios.get(
-			"http://192.168.0.214:8080/getuserweightdata?userid=52",
-			{ headers: header },
-			{ crossDomain: true, withCredentials: true }
-		);
-		const weightData = response.data;
 
-		const weightArray = weightData.map((item) => item.weight);
-		const labels = weightData.map((item) =>
-			new Date(item.createdDate).toLocaleDateString()
-		);
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = auth;
+	  console.log(token);
+	  
+      const header = {
+        Authorization: `Bearer ${auth?.token}`,
+      };
 
-		this.setState((prevState) => ({
-			weightData,
-			datasets: [
-				{
-					...prevState.datasets[0], // Preserve other dataset properties
-					data: weightArray,
-				},
-			],
-			labels,
-		}));
-	}
-	render() {
-		const { weightData } = this.state;
+      try {
+        const response = await axios.get(
+          `http://192.168.0.214:8080/getuserweightdata?userid=${auth?.userInformation.userId}`,
+          { headers: header }
+        );
 
-		return (
-			<div className="tableprop weigth">
-				<table className="table table-sm table-dark">
-					<thead>
-						<tr>
-							<th>Weigth</th>
-							<th>Date</th>
-						</tr>
-					</thead>
-					<tbody>
-						{weightData.map((info) => (
-							<tr key={info.weightId}>
-								<td>{info.weight}</td>
-								<td>
-									{info.createdDate === null
-										? "null"
-										: new Date(
-												info.createdDate
-										  ).toLocaleDateString()}
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-				<div className="chartjs">
-					<div class="chartAreaWrapper">
-						<canvas id="myChart" height="300" width="1200"></canvas>
-					</div>
-					<Line
-						data={{
-							labels: this.state.labels, // Pass the labels
-							datasets: this.state.datasets, // Pass the datasets
-						}}
-						options={{
-							title: {
-								display: true,
-								text: "Weight Graph",
-								fontSize: 20,
-							},
-							legend: {
-								display: true,
-								position: "right",
-							},
-							responsive: true, // Make the chart responsive
-							maintainAspectRatio: true,
-						}}
-					/>
-				</div>
-			</div>
-		);
-	}
+        const weightData = response.data;
+        const weightArray = weightData.map((item) => item.weight);
+        const labels = weightData.map((item) =>
+          new Date(item.createdDate).toLocaleDateString()
+        );
+
+        setWeightState((prevState) => ({
+          ...prevState,
+          weightData,
+          datasets: [
+            {
+              ...prevState.datasets[0],
+              data: weightArray,
+            },
+          ],
+          labels,
+        }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [auth]);
+
+  const { weightData } = weightState;
+
+  return (
+    <div className="tableprop weight">
+      <table className="table table-sm table-dark">
+        <thead>
+          <tr>
+            <th>Weight</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {weightData.map((info) => (
+            <tr key={info.weightId}>
+              <td>{info.weight}</td>
+              <td>
+                {info.createdDate === null
+                  ? "null"
+                  : new Date(info.createdDate).toLocaleDateString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+	  <div className="chartJsContainer" style={{ width: '800px', overflow: 'auto', scrollbarWidth: 'thin' }}>
+ 
+  <div className="chartjs">
+    <Line
+      data={{
+        labels: weightState.labels,
+        datasets: weightState.datasets,
+      }}
+      options={{
+        plugins: {
+          title: {
+            display: true,
+            text: "Weight Graph",
+            font: {
+              size: 20,
+            },
+          },
+        },
+        legend: {
+          display: true,
+          position: "right",
+        },
+        responsive: true, // Prevent chart from resizing
+        maintainAspectRatio: true, // Prevent chart from maintaining aspect ratio
+      }}
+    />
+  </div>
+</div>
+
+    </div>
+  );
 }
 
-export default WeigthHistory;
+export default WeightHistory;

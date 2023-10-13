@@ -4,7 +4,7 @@ import axios from "../axios";
 import useAuth from "../hooks/useAuth";
 
 function Login() {
-	const { setAuth } = useAuth();
+	const { auth,setAuth } = useAuth();
 	const [userName, setUserName] = useState("");
 	const [password, setPassword] = useState("");
 	const [errMsg, setErrMsg] = useState("");
@@ -26,6 +26,7 @@ function Login() {
 			);
 			console.log(response.data);
 			setAuth(response.data);
+			console.log(auth)
 			setSuccess(true);
 		} catch (err) {
 			if (err.response?.status === 403) {
@@ -38,7 +39,7 @@ function Login() {
 		<>
 			{success ? (
 				<p style={{ backgroundColor: "green", color: "red" }}>
-					Login Sucess
+					Login Sucess {JSON.stringify(auth)}
 				</p>
 			) : (
 				<header className="loginPage">
