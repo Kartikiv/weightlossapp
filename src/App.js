@@ -18,13 +18,13 @@ function App() {
 				<Route path="login" element={<Login />} />
 				<Route path="/" element={<HomePage />} />
 				<Route element={<RequireAuth />}>
-					<Route path="home" element={<NavBarComponent />} />
-					<Route path="/weigth" element={<WeightHistory />} />
-					<Route path="/calorie" element={<CalorieHistory />} />
-					<Route path="/home" element={<HomePage />} />
-					<Route path="/update" element={<WeigthUpdate />} />
-					<Route path="/food" element={<FoodHistory />} />
-					<Route path="/login" element={<Login />} />
+					<Route path="home" element={<NavBarComponent />}>
+						<Route path="weigth" element={<WeightHistory />} />
+						<Route path="calorie" element={<CalorieHistory />} />
+						<Route path="update" element={<WeigthUpdate />} />
+						<Route path="food" element={<FoodHistory />} />
+						<Route path="login" element={<Login />} />
+					</Route>
 				</Route>
 			</Routes>
 		</Router>
